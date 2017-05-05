@@ -13,3 +13,26 @@ FreeType(https://www.freetype.org/) 库是开源的、高质量的且可移植�
 * VC++目录 ---> 库目录：E:\freetype-2.6.2\objs\vc2010（就是第2步中lib生成的目录）
 * 链接器 ---> 附加依赖项 ：添加freetype22.lib；freetype262d.lib（就是第2步中生成的lib的名称，freetype22.lib为Release模式，freetype22d.lib为Debug模式）
 
+
+注：由于我用的OpenCV3.0且在其他地方使用的opencv Mat来读取的图片，而这里的putText针对的是IplImage的数据，所以我先将Mat转换为了IplImage，等在图片上画了中文后，又将IplImage转换为Mat。如果只为为了在图片上显示中文，可以直接使用IplImage读显图片。
+此时主函数如下
+
+```C
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include <iostream>
+#include "CvxText.h"
+using namespace std;
+
+int main(int argc, char *argv[])
+{
+	IplImage *img = cvLoadImage("lena.jpg");
+	const char* msg = "这里可以输入汉字哦！";
+	CvxText text("C:\\Windows\\Fonts\\simkai.ttf");
+	text.putText(img, msg, CvPoint(100, 100), CvScalar(0, 255, 255));
+	cvShowImage("test", img);
+	cvWaitKey(-1);
+	cvReleaseImage(&img);
+	return 0;
+}
+```
