@@ -9,7 +9,7 @@
 
 ## OpenCV 环境配置
 
-OpenCV 环境的配置可以参见我的另外一篇博客：[Visual Studio Opencv 环境配置 - 手动配置]()
+OpenCV 环境的配置可以参见我的另外一篇博客：[Visual Studio Opencv 环境配置 - 手动配置](https://github.com/busyboxs/freetype_opencv/blob/master/opencv_visual_studio.md)
 
 ## freetype 环境配置
 
