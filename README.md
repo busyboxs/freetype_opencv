@@ -1,4 +1,21 @@
 # freetype_opencv
+
+----
+
+更新：2019-11-2
+
+* 使用 OpenCV 4.1
+* 使用 freetype 2.10.1
+* 支持 竖向文字、旋转文字
+
+使用说明： [OpenCV 在图像中显示中文]()
+
+![](images/freetypevs008.png)
+
+----
+
+**以下为源项目内容**
+
 OpenCV自带的cvInitFont和cvPutText(putText)函数不支持向图像中写入中文，需要使用FreeType库来进行汉字显示。
 
 FreeType(https://www.freetype.org/) 库是开源的、高质量的且可移植的字体引擎，它提供统一的接口来访问多种字体格式文件。
