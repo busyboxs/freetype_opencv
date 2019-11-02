@@ -8,7 +8,9 @@
 * 使用 freetype 2.10.1
 * 支持 竖向文字、旋转文字
 
-使用说明： [OpenCV 在图像中显示中文](https://github.com/busyboxs/freetype_opencv/blob/master/opencv_puttext_zh.md)
+配置说明： [OpenCV 在图像中显示中文](https://github.com/busyboxs/freetype_opencv/blob/master/opencv_puttext_zh.md)
+
+使用说明：直接打开 `opencv_puttext_zh` 文件夹下的解决方案，配置好依赖环境运行即可。`freetype_test` 为原来版本的文件夹，现在已经没有啦。
 
 ![](images/freetypevs008.png)
 
