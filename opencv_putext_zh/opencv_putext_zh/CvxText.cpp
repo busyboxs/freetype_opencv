@@ -167,8 +167,9 @@ void CvxText::putWChar(cv::Mat& img, wchar_t wc, cv::Point &pos, cv::Scalar colo
 
 			if (slot->bitmap.buffer[off] & (0xC0 >> (j % 8)))
 			{
-				int r = pos.y + i + ((int)m_fontSize.val[0] - rows); // to make align to bottom
+				int r = vertical? pos.y + i: pos.y + i + ((int)m_fontSize.val[0] - rows); // to make align to bottom
 				int c = pos.x + j;
+
 
 				if (r >= 0 && r < img.rows && c >= 0 && c < img.cols)
 				{
@@ -194,7 +195,7 @@ void CvxText::putWChar(cv::Mat& img, wchar_t wc, cv::Point &pos, cv::Scalar colo
 
 	// vertical string or not, default not vertical
 	if (vertical) {
-		pos.y += (int)((isspace ? space : cols) + sep);
+		pos.y += (int)((isspace ? space : rows) + sep);
 	}
 	else {
 		pos.x += (int)((isspace ? space : cols) + sep);
