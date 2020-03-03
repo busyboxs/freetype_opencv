@@ -1,32 +1,35 @@
-﻿#include <wchar.h>  
-#include <assert.h>  
-#include <locale.h>  
-#include <ctype.h>  
+#include "CvxText.h"
 
-#include "CvxText.h"   
+#include <wchar.h>
+#include <assert.h>
+#include <locale.h>
+#include <ctype.h>
 
-CvxText::CvxText(const char *fontType)
+CvxText::CvxText(const cv::String& fontType)
 {
-	assert(fontType != NULL);  
+	assert(!fontType.empty());
 
 	m_error = FT_Init_FreeType(&m_library);
 	if (m_error)
 	{
-		std::cout << "library initial error!" << std::endl;
+		std::cerr << "library initial error!" << std::endl;
+        return;
 	}
 
-	m_error = FT_New_Face(m_library, fontType, 0, &m_face);
+	m_error = FT_New_Face(m_library, fontType.c_str(), 0, &m_face);
 	if (m_error == FT_Err_Unknown_File_Format)
 	{
-		std::cout << "unsupported font format!" << std::endl;
+		std::cerr << "unsupported font format!" << std::endl;
+        return;
 	}
 	else if (m_error)
 	{
-		std::cout << " can not open font files" << std::endl;
+		std::cerr << " can not open font files" << std::endl;
+        return;
 	}
 
 	// use default parameters
-	initFont(); 
+	initFont();
 
 	setlocale(LC_ALL, "");
 }
@@ -38,59 +41,27 @@ CvxText::~CvxText()
 	FT_Done_FreeType(m_library);
 }
 
-void CvxText::getFont(cv::Scalar *size, bool *underline, float *diaphaneity)
+void CvxText::setFontSize(int fontSize)
 {
-	if (size) *size = m_fontSize;
-	if (underline) *underline = m_fontUnderline;
-	if (diaphaneity) *diaphaneity = m_fontDiaphaneity;
-}
-
-void CvxText::setFont(cv::Scalar *size, bool *underline, float *diaphaneity)
-{ 
-	if (size)
-	{
-		m_fontSize.val[0] = fabs(size->val[0]);
-		m_fontSize.val[1] = fabs(size->val[1]);
-		m_fontSize.val[2] = fabs(size->val[2]);
-		m_fontSize.val[3] = fabs(size->val[3]);
-	}
-	if (underline)
-	{
-		m_fontUnderline = *underline;
-	}
-	if (diaphaneity)
-	{
-		m_fontDiaphaneity = *diaphaneity;
-	}
-	FT_Set_Pixel_Sizes(m_face, (int)m_fontSize.val[0], 0);
-}
-
-void CvxText::setFontSize(int font_size, double rotate_angle, double space_ratio, double sep_ratio) {
-	m_fontSize.val[0] = fabs(font_size);
-	m_fontSize.val[1] = fabs(space_ratio);
-	m_fontSize.val[2] = fabs(sep_ratio);
-	m_fontSize.val[3] = rotate_angle;
-
-	FT_Set_Pixel_Sizes(m_face, (int)m_fontSize.val[0], 0);
+    m_font.fontSize = fontSize;
+    FT_Set_Pixel_Sizes(m_face, m_font.fontSize, 0);
 }
 
 // initial font 
 void CvxText::initFont()
-{ 
-	m_fontSize.val[0] = 16;    // font size 
-	m_fontSize.val[1] = 0.5;   // ratio of distance when meet a space, base on font size 
-	m_fontSize.val[2] = 0.1;   // ratio of distance between each character, base on font size
-	m_fontSize.val[3] = 0;     // rotate angle
-
-	m_fontUnderline = false;   // underline (not support yet)  
-
-	m_fontDiaphaneity = 1.0;   // merge ratio
+{
+	m_font.fontSize = 16;
+	m_font.spaceRatio = 0.5f;
+	m_font.fontRatio = 0.1f;
+    m_font.fontRotateAngle = 0;
+    m_font.fontDiaphaneity = 1;
+	m_font.fontIsUnderline = false;
 
 	// set font 
-	FT_Set_Pixel_Sizes(m_face, (int)m_fontSize.val[0], 0);
+	FT_Set_Pixel_Sizes(m_face, m_font.fontSize, 0);
 }
 
-void CvxText::rotateFont(double angle) {
+void CvxText::rotateFont(float angle) {
 	angle = (angle / 360) * 3.14159 * 2;
 	/* set up matrix */
 	m_matrix.xx = (FT_Fixed)(cos(angle) * 0x10000L);
@@ -104,52 +75,96 @@ void CvxText::rotateFont(double angle) {
 	FT_Set_Transform(m_face, &m_matrix, &m_pen);
 }
 
-int CvxText::putText(cv::Mat& img, const char *text, cv::Point pos, cv::Scalar color, bool vertical)
+void CvxText::putTextHorizon(cv::Mat & img, const cv::String & text, cv::Point pos, int fontSize, cv::Scalar color)
 {
-	if (img.empty()) 
-		return -1;
-	if (text == NULL) 
-		return -1;
+    int size = getFontSize();
+    setFontSize(fontSize);
+    putText(img, text, pos, color, false);
+    setFontSize(size);
+}
+
+void CvxText::putTextVertical(cv::Mat & img, const cv::String & text, cv::Point pos, int fontSize, cv::Scalar color)
+{
+    int size = getFontSize();
+    setFontSize(fontSize);
+    putText(img, text, pos, color, true);
+    setFontSize(size);
+}
+
+void CvxText::putTextRotateH(cv::Mat & img, const cv::String & text, cv::Point pos, int fontSize, cv::Scalar color, float rotateAngle)
+{
+    int size = getFontSize();
+    float angle = getAngle();
+    setFontSize(fontSize);
+    setRotateAngle(rotateAngle);
+    putText(img, text, pos, color, false);
+    setFontSize(size);
+    setRotateAngle(angle);
+}
+
+void CvxText::putTextRotateV(cv::Mat & img, const cv::String & text, cv::Point pos, int fontSize, cv::Scalar color, float rotateAngle)
+{
+    int size = getFontSize();
+    float angle = getAngle();
+    setFontSize(fontSize);
+    setRotateAngle(rotateAngle);
+    putText(img, text, pos, color, true);
+    setFontSize(size);
+    setRotateAngle(angle);
+}
+
+void CvxText::putText(cv::Mat& img, const cv::String& text, cv::Point pos, cv::Scalar color, bool vertical)
+{
+    if (img.empty()) {
+        //std::cerr << "img can't be empty" << '\n';
+        return;
+    }
+
+    if (text.empty()) {
+        return ;
+    }
+
+    int xStart = pos.x;
+    int yStart = pos.y;
 
 	int i;
 	for (i = 0; text[i] != '\0'; ++i)
 	{
 		wchar_t wc = text[i];
 
-		// parse double-byte character 
-		if (!isascii(wc)) 
-			mbtowc(&wc, &text[i++], 2);
+		// parse multi-byte character 
+        if (!isascii(wc)) {
+            static int bytelen = mblen(&text[i], 3);
+            mbtowc(&wc, &text[i], bytelen);
+            i += bytelen - 1;
+        }
 
 		// put character on image
 		putWChar(img, wc, pos, color, vertical);
 	}
-	return i;
+
+    int xEnd = pos.x;
+    int yEnd = pos.y;
+    if (m_font.fontIsUnderline) {
+        if (vertical) {
+            cv::line(img, cv::Point(xStart + m_font.fontSize, yStart), cv::Point(xStart + m_font.fontSize, yEnd), color, 2);
+        }
+        else {
+            cv::line(img, cv::Point(xStart, yStart + m_font.fontSize), cv::Point(xEnd, yStart + m_font.fontSize), color, 2);
+        }
+    }
+    
 }
-
-int CvxText::putText(cv::Mat& img, const wchar_t *text, cv::Point pos, cv::Scalar color, bool vertical)
-{
-	if (img.empty()) 
-		return -1;
-	if (text == NULL) 
-		return -1; 
-
-	int i;
-	for (i = 0; text[i] != '\0'; ++i)
-	{
-		putWChar(img, text[i], pos, color, vertical);
-	}
-	return i;
-} 
 
 void CvxText::putWChar(cv::Mat& img, wchar_t wc, cv::Point &pos, cv::Scalar color, bool vertical)
 {
 
-	rotateFont(m_fontSize.val[3]);
-	
+	rotateFont(m_font.fontRotateAngle);
+
 	// Converting a Character Code Into a Glyph Index
 	FT_UInt glyph_index = FT_Get_Char_Index(m_face, wc);
 	FT_Load_Glyph(m_face, glyph_index, FT_LOAD_DEFAULT);
-	FT_Render_Glyph(m_face->glyph, FT_RENDER_MODE_MONO);  
+	FT_Render_Glyph(m_face->glyph, FT_RENDER_MODE_MONO);
 
 	FT_GlyphSlot slot = m_face->glyph;
 
@@ -167,7 +182,7 @@ void CvxText::putWChar(cv::Mat& img, wchar_t wc, cv::Point &pos, cv::Scalar colo
 
 			if (slot->bitmap.buffer[off] & (0xC0 >> (j % 8)))
 			{
-				int r = vertical? pos.y + i: pos.y + i + ((int)m_fontSize.val[0] - rows); // to make align to bottom
+				int r = vertical ? pos.y + i : pos.y + i + (m_font.fontSize - rows); // to make align to bottom
 				int c = pos.x + j;
 
 
@@ -176,7 +191,7 @@ void CvxText::putWChar(cv::Mat& img, wchar_t wc, cv::Point &pos, cv::Scalar colo
 					cv::Vec3b scalar = img.at<cv::Vec3b>(cv::Point(c, r));
 
 					// merge set color with origin color
-					float p = m_fontDiaphaneity;
+					float p = m_font.fontDiaphaneity;
 					for (int k = 0; k < 3; ++k)
 					{
 						scalar.val[k] = (uchar)(scalar.val[k] * (1 - p) + color.val[k] * p);
@@ -185,13 +200,13 @@ void CvxText::putWChar(cv::Mat& img, wchar_t wc, cv::Point &pos, cv::Scalar colo
 					img.at<cv::Vec3b>(cv::Point(c, r)) = cv::Vec3b(scalar[0], scalar[1], scalar[2]);
 				}
 			}
-		}   
-	} 
+		}
+	}
 
 	// modify position to next character 
 
-	double space = m_fontSize.val[0] * m_fontSize.val[1];
-	double sep = m_fontSize.val[0] * m_fontSize.val[2];
+	double space = m_font.fontSize * m_font.spaceRatio;
+	double sep = m_font.fontSize * m_font.fontRatio;
 
 	// vertical string or not, default not vertical
 	if (vertical) {
