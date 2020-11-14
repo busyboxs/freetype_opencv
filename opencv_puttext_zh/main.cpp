@@ -1,11 +1,14 @@
-﻿#include "CvxFont.h"
+#include "CvxFont.h"
 
-#include <iostream>
+#include "Chinese_test.h"
+#include "Japanese_test.h"
+#include "Symbol_test.h"
 
 cv::Scalar randomColor(cv::RNG& rng)
 {
     auto icolor = (unsigned)rng;
-    return cv::Scalar(icolor & 255, (icolor >> 8) & 255, (icolor >> 16) & 255);
+    auto randomColor = cv::Scalar(icolor & 255, (icolor >> 8) & 255, (icolor >> 16) & 255);
+    return randomColor;
 }
 
 std::vector<std::string> fontText{
@@ -37,10 +40,6 @@ std::vector<std::string> fontText{
 
 int main(int argc, char *argv[])
 {
-    extern void testChinese();
-    extern void testJapanese();
-    extern void testOthers();
-    extern void testSymbols();
     testChinese();
     testJapanese();
     testOthers();

@@ -1,4 +1,4 @@
-﻿#include "CvxFont.h"
+#include "CvxFont.h"
 
 extern cv::Scalar randomColor(cv::RNG& rng);
 static cv::RNG rng(0xFFFFFFFF);
@@ -7,7 +7,7 @@ static cv::RNG rng(0xFFFFFFFF);
 void testJapanese() {
     // create a black background
     cv::Mat img(400, 800, CV_8UC3, cv::Scalar(0, 0, 0));
-    std::string fontPath = "./font/msgothic.ttc";
+    std::string fontPath = "../font/msgothic.ttc";
 
     // be careful to use the font that support Chinese
     cvx::CvxFont font(fontPath);
@@ -22,12 +22,12 @@ void testJapanese() {
 void testOthers() {
     // create a black background
     cv::Mat img(700, 1200, CV_8UC3, cv::Scalar(0, 0, 0));
-    std::string fontPath = "./font/msgothic.ttc";
+    std::string fontPath = "../font/msgothic.ttc";
 
     // be careful to use the font that support Chinese
     cvx::CvxFont font(fontPath);
-    int i = 0, page = 0, x = 10, y = 10;
-    std::vector<uint32_t> symbols;
+    int i = 0, page = 0, x = 10, y = 40;
+    std::vector<uint32_t> symbols{};
     for (uint32_t c = 0x3040; c <= 0x309f; ++c) {
         symbols.push_back(c);
         if ((i + 1) % 16 == 0) {
@@ -48,7 +48,7 @@ void testOthers() {
             cv::Mat black(700, 1200, CV_8UC3, cv::Scalar(0, 0, 0));
             img = black;
             char k = cv::waitKey();
-            x = 10, y = 10;
+            x = 10, y = 40;
             if (k == 'q') {  // press q to quite
                 return;
             }

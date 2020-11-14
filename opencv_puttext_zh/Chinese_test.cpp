@@ -1,4 +1,5 @@
-﻿#include "CvxFont.h"
+#include "CvxFont.h"
+using namespace cvx;
 
 extern cv::Scalar randomColor(cv::RNG& rng);
 static cv::RNG rng(0xFFFFFFFF);
@@ -6,7 +7,7 @@ static cv::RNG rng(0xFFFFFFFF);
 void testLowerAlpha(cvx::CvxFont& font, cv::Mat& img) {
     cv::String msg = "abcdefghijklmnopqrstuvwxyz";
     int fontSize = 32;
-    cvx::putText(img, msg, cv::Point(40, 20), font, fontSize, cv::Scalar(0, 255, 0));
+    cvx::putText(img, msg, cv::Point(40, 40), font, fontSize, cv::Scalar(0, 255, 0));
 }
 
 void testUpperAlpha(cvx::CvxFont& font, cv::Mat& img) {
@@ -19,7 +20,7 @@ void testUpperAlpha(cvx::CvxFont& font, cv::Mat& img) {
 void testHorizon(cvx::CvxFont& font, cv::Mat& img) {
     //    cv::RNG rng(0xFFFFFFFF);
     int fontSize = 32;
-    cv::String msg2 = "这是水平字符";
+    cv::String msg2 = "这是水平字符abcgf";
     cvx::putText(img, msg2, cv::Point(40, 200), font, fontSize, randomColor(rng));
 }
 
@@ -27,8 +28,8 @@ void testVertical(cvx::CvxFont& font, cv::Mat& img) {
     //    cv::RNG rng(0xFFFFFFFF);
     int fontSize = 32;
     font.setVertical(true);
-    cv::String msg3 = "这是竖直字符ada";
-    cvx::putText(img, msg3, cv::Point(0, 40), font, fontSize, randomColor(rng));
+    cv::String msg3 = "这是竖直字符abcij";
+    cvx::putText(img, msg3, cv::Point(17, 30), font, fontSize, randomColor(rng));
 }
 
 void testHorizonRotate(cvx::CvxFont& font, cv::Mat& img) {
@@ -100,7 +101,7 @@ void testUnderline(cvx::CvxFont& font, cv::Mat& img) {
 
 void testChinese() {
     cv::Mat img(400, 800, CV_8UC3, cv::Scalar(0, 0, 0)); // create a black background
-    std::string fontPath = "./font/STCAIYUN.TTF"; // be careful to use the font that support Chinese
+    std::string fontPath = "../font/STCAIYUN.TTF"; // be careful to use the font that support Chinese
     cvx::CvxFont font(fontPath);
 
     testLowerAlpha(font, img);
