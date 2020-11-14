@@ -12,7 +12,7 @@
 
 ### 3. Clion 配置
 
-* 配置文件参考：[CMakeLists](https://github.com/busyboxs/freetype_opencv/blob/master/OpenCVUnicode/CMakelists.txt)
+* 配置文件参考：[CMakeLists](https://github.com/busyboxs/freetype_opencv/blob/master/OpenCVUnicode/CMakeLists.txt)
 
 ----
 
