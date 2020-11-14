@@ -40,8 +40,14 @@
 
 中文测试效果
 
-![](images/result.png)
+![](images/ubuntu1.png)
+
+日文测试效果
+
+![](images/ubuntu2.png)
 
 Unicode 字符测试效果（需要使用对应的字体）
 
-![](images/result4.png)
+![](images/ubuntu3.png)
+
+![](images/ubuntu4.png)
