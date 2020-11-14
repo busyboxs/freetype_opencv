@@ -6,7 +6,7 @@
 * 修改了画字形时移动画笔的方法（英文字体有高度位置关系，看起来更合适，但也有一点问题）
 * 修改多字节转 wchar 的方法，删除了原来跨平台的部分
 
-> 修改了画字形的方法后，也引出了另一个问题，根据 [freetype 官方的说明](https://www.freetype.org/freetype2/docs/glyphs/glyphs-3.html)，使用修改后的画图方法会使得画的文字位置与你想要的位置有一定的偏差，因为我的代码里是使用字型的 origin 点作为 pos。因此，为了画出你想要的结果，可以在定位时稍微将 pos 的增加一点点。或者在 putWChar 函数中的 gPos 加上一个 0 ~  font size 的值。
+> 修改了画字形的方法后，也引出了另一个问题，根据 [freetype 官方的说明](https://www.freetype.org/freetype2/docs/glyphs/glyphs-3.html)，使用修改后的画图方法会使得画的文字位置与你想要的位置有一定的偏差，因为我的代码里是使用字型的 origin 点作为 pos。因此，为了画出你想要的结果，可以在定位时稍微将 pos 的 y 增加一点点。或者在 putWChar 函数中的 gPos 加上一个 0 ~  font size 的值。
 
 ----
 
