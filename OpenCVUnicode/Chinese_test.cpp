@@ -1,4 +1,6 @@
-ï»¿#include "CvxFont.h"
+#include "Chinese_test.h"
+#include "CvxFont.h"
+using namespace cvx;
 
 extern cv::Scalar randomColor(cv::RNG& rng);
 static cv::RNG rng(0xFFFFFFFF);
@@ -6,7 +8,7 @@ static cv::RNG rng(0xFFFFFFFF);
 void testLowerAlpha(cvx::CvxFont& font, cv::Mat& img) {
     cv::String msg = "abcdefghijklmnopqrstuvwxyz";
     int fontSize = 32;
-    cvx::putText(img, msg, cv::Point(40, 20), font, fontSize, cv::Scalar(0, 255, 0));
+    cvx::putText(img, msg, cv::Point(40, 40), font, fontSize, cv::Scalar(0, 255, 0));
 }
 
 void testUpperAlpha(cvx::CvxFont& font, cv::Mat& img) {
@@ -19,7 +21,7 @@ void testUpperAlpha(cvx::CvxFont& font, cv::Mat& img) {
 void testHorizon(cvx::CvxFont& font, cv::Mat& img) {
     //    cv::RNG rng(0xFFFFFFFF);
     int fontSize = 32;
-    cv::String msg2 = "è¿™æ˜¯æ°´å¹³å­—ç¬¦";
+    cv::String msg2 = "ÕâÊÇË®Æ½×Ö·ûabcgf";
     cvx::putText(img, msg2, cv::Point(40, 200), font, fontSize, randomColor(rng));
 }
 
@@ -27,8 +29,8 @@ void testVertical(cvx::CvxFont& font, cv::Mat& img) {
     //    cv::RNG rng(0xFFFFFFFF);
     int fontSize = 32;
     font.setVertical(true);
-    cv::String msg3 = "è¿™æ˜¯ç«–ç›´å­—ç¬¦ada";
-    cvx::putText(img, msg3, cv::Point(0, 40), font, fontSize, randomColor(rng));
+    cv::String msg3 = "ÕâÊÇÊúÖ±×Ö·ûabcij";
+    cvx::putText(img, msg3, cv::Point(17, 30), font, fontSize, randomColor(rng));
 }
 
 void testHorizonRotate(cvx::CvxFont& font, cv::Mat& img) {
@@ -46,23 +48,23 @@ void testVerticalRotate(cvx::CvxFont& font, cv::Mat& img) {
     float angle = -30;
     font.setVertical(true);
     font.setRotateAngle(angle);
-    cv::String msg5 = "è¿™æ˜¯æ—‹è½¬å­—ç¬¦";
+    cv::String msg5 = "ÕâÊÇĞı×ª×Ö·û";
     cvx::putText(img, msg5, cv::Point(700, 100), font, fontSize, randomColor(rng));
 }
 
 void testTruncate(cvx::CvxFont& font, cv::Mat& img) {
     //    cv::RNG rng(0xFFFFFFFF);
     int fontSize = 32;
-    cv::String msg6 = "å­—ç¬¦å¯ä»¥è¢«æˆªæ–­";
+    cv::String msg6 = "×Ö·û¿ÉÒÔ±»½Ø¶Ï";
     putText(img, msg6, cv::Point(600, 40), font, fontSize, randomColor(rng));
 }
 
 void testFontSize(cvx::CvxFont& font, cv::Mat& img) {
     //    cv::RNG rng(0xFFFFFFFF);
     int fontSize = 16;
-    cv::String msg7 = "è¿™æ˜¯16å·å­—ä½“";
+    cv::String msg7 = "ÕâÊÇ16ºÅ×ÖÌå";
     putText(img, msg7, cv::Point(40, 350), font, fontSize, randomColor(rng));
-    cv::String msg8 = "è¿™æ˜¯32å·å­—ä½“";
+    cv::String msg8 = "ÕâÊÇ32ºÅ×ÖÌå";
     fontSize = 32;
     putText(img, msg8, cv::Point(160, 350), font, fontSize, randomColor(rng));
 }
@@ -70,14 +72,14 @@ void testFontSize(cvx::CvxFont& font, cv::Mat& img) {
 void testSpace(cvx::CvxFont& font, cv::Mat& img) {
     //    cv::RNG rng(0xFFFFFFFF);
     int fontSize = 32;
-    cv::String msg9 = "æœ‰ç©º æ ¼æ—¶";
+    cv::String msg9 = "ÓĞ¿Õ ¸ñÊ±";
     putText(img, msg9, cv::Point(500, 300), font, fontSize, randomColor(rng));
 }
 
 void testBetweenSpace(cvx::CvxFont& font, cv::Mat& img) {
     //    cv::RNG rng(0xFFFFFFFF);
     int fontSize = 32;
-    cv::String msg10 = "æ›´å¤§çš„å­—é—´è·";
+    cv::String msg10 = "¸ü´óµÄ×Ö¼ä¾à";
     font.setFontRatio(0.3f);
     putText(img, msg10, cv::Point(500, 350), font, fontSize, randomColor(rng));
 }
@@ -85,7 +87,7 @@ void testBetweenSpace(cvx::CvxFont& font, cv::Mat& img) {
 void testTransparency(cvx::CvxFont& font, cv::Mat& img) {
     //    cv::RNG rng(0xFFFFFFFF);
     int fontSize = 32;
-    cv::String msg11 = "è®¾ç½®é€æ˜åº¦";
+    cv::String msg11 = "ÉèÖÃÍ¸Ã÷¶È";
     font.setDiaphaneity(0.3f);
     putText(img, msg11, cv::Point(500, 200), font, fontSize, randomColor(rng));
 }
@@ -93,7 +95,7 @@ void testTransparency(cvx::CvxFont& font, cv::Mat& img) {
 void testUnderline(cvx::CvxFont& font, cv::Mat& img) {
     //    cv::RNG rng(0xFFFFFFFF);
     int fontSize = 32;
-    cv::String msg12 = "åŠ ä¸‹åˆ’çº¿";
+    cv::String msg12 = "¼ÓÏÂ»®Ïß";
     font.setUnderline(true);
     putText(img, msg12, cv::Point(500, 150), font, fontSize, randomColor(rng));
 }

@@ -42,10 +42,10 @@
 
 ```cpp
 int fontSize;           // 基于像素的字体大小
-float spaceRatio;       // 空格字符与文字字符的占比（相对于字符）
-float fontRatio;        // 字符与字符之间空间的占比（相对于字符）
-float fontRotateAngle;  // 字符旋转的角度
-float fontDiaphaneity;  // 字符透明度（与背景融合占比）
+double spaceRatio;       // 空格字符与文字字符的占比（相对于字符）
+double fontRatio;        // 字符与字符之间空间的占比（相对于字符）
+double fontRotateAngle;  // 字符旋转的角度
+double fontDiaphaneity;  // 字符透明度（与背景融合占比）
 bool fontIsUnderline;   // 下划线标志
 bool fontIsVertical;    // 竖直方向字符标志
 ```
@@ -54,8 +54,8 @@ bool fontIsVertical;    // 竖直方向字符标志
 
 ```cpp
 fontSize = 32;
-spaceRatio = 0.5f;
-fontRatio = 0.1f;
+spaceRatio = 0.5;
+fontRatio = 0;
 fontRotateAngle = 0;
 fontDiaphaneity = 1;
 fontIsUnderline = false;
@@ -86,7 +86,7 @@ void putOneSymbol(cv::Mat& img, uint32_t symbol, cv::Point pos, cvx::CvxFont& fo
 void testVerticalRotate(cvx::CvxFont& font, cv::Mat& img) {
     //    cv::RNG rng(0xFFFFFFFF);
     int fontSize = 32;
-    float angle = -30;
+    double angle = -30;
     font.setVertical(true);
     font.setRotateAngle(angle);
     cv::String msg5 = "这是旋转字符";
