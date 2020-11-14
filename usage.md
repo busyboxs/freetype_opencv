@@ -12,7 +12,7 @@
 
 ### 3. Clion 配置
 
-* 配置文件参考：[CMakeLists](https://github.com/busyboxs/freetype_opencv/blob/master/opencv_puttext_zh/CMakelists.txt)
+* 配置文件参考：[CMakeLists](https://github.com/busyboxs/freetype_opencv/blob/master/OpenCVUnicode/CMakelists.txt)
 
 ----
 
@@ -41,21 +41,21 @@
 代码中定义了一个字体类，字体属性包含以下
 
 ```cpp
-int fontSize;           // 基于像素的字体大小
-float spaceRatio;       // 空格字符与文字字符的占比（相对于字符）
-float fontRatio;        // 字符与字符之间空间的占比（相对于字符）
-float fontRotateAngle;  // 字符旋转的角度
-float fontDiaphaneity;  // 字符透明度（与背景融合占比）
-bool fontIsUnderline;   // 下划线标志
-bool fontIsVertical;    // 竖直方向字符标志
+int fontSize;            // 基于像素的字体大小
+double spaceRatio;       // 空格字符与文字字符的占比（相对于字符）
+double fontRatio;        // 字符与字符之间空间的占比（相对于字符）
+double fontRotateAngle;  // 字符旋转的角度
+double fontDiaphaneity;  // 字符透明度（与背景融合占比）
+bool fontIsUnderline;    // 下划线标志
+bool fontIsVertical;     // 竖直方向字符标志
 ```
 
-这些属性都可以通过类的 `get*-` 和 `set*-` 设置和获取对应的属性。默认情况下（初始化）
+这些属性都可以通过类的 `get*-` 和 `set*-` 获取和设置对应的属性。默认情况下（初始化）
 
 ```cpp
 fontSize = 32;
-spaceRatio = 0.5f;
-fontRatio = 0.1f;
+spaceRatio = 0.5;
+fontRatio = 0;
 fontRotateAngle = 0;
 fontDiaphaneity = 1;
 fontIsUnderline = false;
